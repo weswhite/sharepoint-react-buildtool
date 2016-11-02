@@ -6,8 +6,7 @@ var APP_DIR = path.resolve(__dirname, 'src/app');
 
 var config = {
   entry: [
-    APP_DIR + '/index.jsx',
-    APP_DIR + '/otherComponent.jsx'
+    APP_DIR + '/index.jsx'
   ] ,
   output: {
     path: BUILD_DIR,

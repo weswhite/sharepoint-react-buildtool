@@ -1,5 +1,6 @@
 import React from 'react';
-import pnp from 'sp-pnp-js';
+import request from 'superagent';
+import $ from 'jquery';
 
 export default class IssuesTable extends React.Component {
   constructor(){
@@ -7,27 +8,37 @@ export default class IssuesTable extends React.Component {
     this.state = {};
   }
   componentWillMount(){
-    //called at component load time
-    //this is where we will call the API with the php lib
-    var url = "";//SP API URL
-    pnp.sp.web.get().then((response) => {
+    var baseUrl = "https://magenic365.sharepoint.com/sites/PatrickL/POC";
+    var getIssuesColumns = function () {
+        return "Id,Owner/Title,Owner/Id, Title, Team/Title,Team/Id,Status, DueDate";
+    }
+    var getIssuesExpandColumns = function () {
+        return "&$expand=Owner/Id, Team/Id";
+    }
+    var Columns = getIssuesColumns();
+    var ExpandColumns = getIssuesExpandColumns();
+    var filter = Columns + ExpandColumns;
+
+    request.get(baseUrl + "/_api/web/lists/getbytitle('Issues')/items?$select=" + filter)
+    .set('accept', 'application/json;odata=verbose')
+    .then((response) => {
+      console.log(response);
       this.setState({
-        data: response
-      })
-    });
+        issues: response.body.d.results
+      });
+    })
+    .catch(this.setState({issues: [{Id: "1", Title: "Me"}, {Id:"2", Title: "You"}]}));
   }
   //component markup
   render () {
+    var issues = this.state.issues.map((issue) => {
+      return <tr key={issue.Id}>
+        <td>{issue.Title}</td>
+      </tr>;
+    });
     return <table>
-        <thead>
-            <tr>
-                <td>Issues</td>
-            </tr>
-        </thead>
         <tbody>
-            <tr>
-                <td>issue 1</td>
-            </tr>
+          {issues}
         </tbody>
     </table>;
   }
