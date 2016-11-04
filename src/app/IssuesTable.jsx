@@ -1,25 +1,15 @@
 import React from 'react';
 import request from 'superagent';
-import {Table, Button, Modal} from 'react-bootstrap';
+import {Table} from 'react-bootstrap';
+import EditIssuesModal from './EditIssuesModal.jsx';
 
 export default class IssuesTable extends React.Component {
   constructor(){
     super();
-    this.state = {showModal: false};
-    //event bindings
-    this.close = this.close.bind(this);
+    this.state = {};
     this.open = this.open.bind(this);
   }
-  //functions for the modal(open and close)
-  close(){
-    this.setState({ showModal: false });
-  }
-
-  open(){
-    this.setState({ showModal: true });
-  }
-
-  componentDidMount(){
+  componentWillMount(){
     var mockIssues = [
         {
           Title: "An Issue",
@@ -44,9 +34,11 @@ export default class IssuesTable extends React.Component {
     var getIssuesExpandColumns = function () {
         return "&$expand=Owner/Id, Team/Id";
     }
-    var Columns = getIssuesColumns();
-    var ExpandColumns = getIssuesExpandColumns();
-    var filter = Columns + ExpandColumns;
+
+    var columns = getIssuesColumns();
+    var expandColumns = getIssuesExpandColumns();
+
+    var filter = columns + expandColumns;
 
     request.get(baseUrl + "/_api/web/lists/getbytitle('Issues')/items?$select=" + filter)
     .set('accept', 'application/json;odata=verbose')
@@ -58,6 +50,10 @@ export default class IssuesTable extends React.Component {
     })
     .catch(this.setState({issues: mockIssues}));
   }
+
+  open(){
+    this.child.open();
+  }
   //component markup
   render () {
     var issues = this.state.issues.map((issue) => {
@@ -67,7 +63,7 @@ export default class IssuesTable extends React.Component {
         <td>{issue.Owner.Title}</td>
         <td>{issue.Status}</td>
         <td>{issue.DueDate}</td>
-        <td><Button bsStyle="primary" onClick={this.open}>Edit</Button></td>
+        <td><EditIssuesModal issue={issue}/></td>
       </tr>;
     });
     return <div>
@@ -86,14 +82,6 @@ export default class IssuesTable extends React.Component {
           {issues}
         </tbody>
       </Table>
-      <Modal show={this.state.showModal} onHide={this.close}>
-        <Modal.Header closeButton>
-          <Modal.Title>Edit Form</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <h4>Edit form here</h4>
-        </Modal.Body>
-      </Modal>
     </div>;
   }
 }
