@@ -1,23 +1,15 @@
 import React from 'react';
 import request from 'superagent';
-import {FormControl, FormGroup, ControlLabel, Button} from 'react-bootstrap';
+import {FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
 
 export default class EditIssuesForm extends React.Component {
   constructor(props){
     super(props);
     this.state = this.props.issue;
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
   }
   handleChange(e) {
    this.setState({ value: e.target.value });
-  }
-  handleSubmit(){
-    //make rest call to update sharepoint
-  }
-  componentWillMount(){
-    //get the possible teams and owners from sharepoint for validation
-  }
+ }
 
   render () {
     return <div>
@@ -30,7 +22,7 @@ export default class EditIssuesForm extends React.Component {
             placeholder={this.props.issue.Title}
             onChange={this.handleChange}
           />
-          <ControlLabel>Team</ControlLabel>
+        <ControlLabel>Team</ControlLabel>
           <FormControl
             type="text"
             value={this.props.issue.Team.Title}
@@ -57,10 +49,12 @@ export default class EditIssuesForm extends React.Component {
               value={this.props.issue.DueDate}
               placeholder={this.props.issue.DueDate}
               onChange={this.handleChange}
-          />
-          <Button onClick={handleSubmit}></Button>
+            />
+
         </FormGroup>
       </form>
     </div>;
+
+
   }
 }
