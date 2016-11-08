@@ -1,7 +1,7 @@
 import React from 'react';
 import request from 'superagent';
 import {Table} from 'react-bootstrap';
-import EditIssuesModal from './EditIssuesModal.jsx';
+import EditIssuesModal from './EditIssuesModal.js';
 
 export default class IssuesTable extends React.Component {
   constructor(){
@@ -12,6 +12,7 @@ export default class IssuesTable extends React.Component {
   componentWillMount(){
     var mockIssues = [
         {
+          Id: "1",
           Title: "An Issue",
           Team: {Title: "Team 1"},
           Owner: {Title: "Wes"},
@@ -19,6 +20,7 @@ export default class IssuesTable extends React.Component {
           DueDate: "10/13/2017"
         },
         {
+          Id: "2",
           Title: "Another Issue",
           Team: {Title: "Team 2"},
           Owner: {Title: "Wes"},

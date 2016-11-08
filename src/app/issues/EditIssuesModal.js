@@ -1,7 +1,7 @@
 import React from 'react';
 import request from 'superagent';
 import {Modal, Button} from 'react-bootstrap';
-import EditIssueForm from './EditIssueForm.jsx';
+import EditIssueForm from './EditIssueForm.js';
 
 export default class EditIssuesModal extends React.Component {
   constructor(props){

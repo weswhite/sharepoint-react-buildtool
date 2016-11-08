@@ -1,8 +1,7 @@
 import React from 'react';
 import {render} from 'react-dom';
 
-import IssuesTable from './IssuesTable.jsx';
-//import Other from './Other.jsx';
+import IssuesTable from './issues/IssuesTable.js';
 
 class App extends React.Component {
   render () {
